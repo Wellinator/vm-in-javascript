@@ -1,3 +1,5 @@
+import './style.css';
+
 const createMemory = require('./VM/create-memory');
 const CPU = require('./VM/cpu');
 const instructions = require('./VM/instructions');

@@ -1,5 +1,6 @@
 const createMemory = require('./create-memory');
 const instructions = require('./instructions');
+const Terminal = require('../FrontEnd/terminal');
 
 class CPU {
   constructor(memory) {
@@ -28,11 +29,11 @@ class CPU {
 
   debug() {
     this.registersNames.forEach((name) => {
-      console.log(
+      Terminal.print(
         `${name}: 0x${this.getRegister(name).toString(16).padStart(4, '0')}`
       );
     });
-    console.log('\n');
+    Terminal.print('\n');
   }
 
   getRegister(name) {

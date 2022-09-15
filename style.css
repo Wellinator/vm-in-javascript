@@ -1,3 +1,83 @@
-h1, h2 {
-  font-family: Lato;
+.blink_me {
+  animation: blinker 1000ms step-end infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+#terminal::-webkit-scrollbar {
+  margin-left: 5px;
+  width: 7px;
+  height: 7px;
+}
+
+/* Track */
+#terminal::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* Handle */
+#terminal::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(140, 147, 170, 0.8);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+#terminal::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(98, 105, 131, 0.4);
+}
+
+h1,
+h2 {
+  font-family: sans-serif;
+}
+
+#terminal {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  background-color: black;
+  font-family: monospace;
+  color: lightgray;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+#cursor {
+  display: inline;
+  color: lightgray;
+}
+
+#cursor::before {
+  content: '█';
+}
+
+.success {
+  color: greenyellow;
+}
+
+.warn {
+  color: orange;
+}
+
+.error {
+  color: red;
+}
+
+.terminal-line {
+  width: 100%;
+  text-align: start;
+  padding-top: 5px;
+}
+
+.terminal-line::before {
+  color: lightgray;
+  content: '@root: ';
 }
