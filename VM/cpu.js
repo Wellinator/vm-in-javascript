@@ -36,6 +36,19 @@ class CPU {
     Terminal.print('\n');
   }
 
+  /**
+   * Print the address, one bit before and the next seven bytes after;
+   * @example 0x0f01(target adrress): (previous byte ->) 0x04 (next bytes ->) 0x05 0xA3 0xFE 0x13 0x0D 0x44 0x0F
+   */
+  viewMemoryAt(address) {
+    const nextEightBytes = Array.from({ length: 8 }, (_, i) =>
+      this.memory.getUint8(address + 1)
+    ).map((v) => `0x${v.toString(16).padStart(2, '0')}`);
+    Terminal.printWarn(
+      `0x${address.toString(16).padStart(4, '0')}: ${nextEightBytes.join(' ')}`
+    );
+  }
+
   getRegister(name) {
     if (!(name in this.registerMap)) {
       throw new Error(`getRegister: No such register '${name}'`);
@@ -68,17 +81,38 @@ class CPU {
 
   execute(instruction) {
     switch (instruction) {
-      // Move literal into the r1 register
-      case instructions.MOV_LIT_R1: {
+      // Move literal into register
+      case instructions.MOV_LIT_REG: {
         const literal = this.fetch16();
-        this.setRegister('r1', literal);
+        const register = (this.fetch() % this.registersNames.length) * 2;
+        this.registers.setUint16(register, literal);
         return;
       }
 
-      // Move literal into the r2 register
-      case instructions.MOV_LIT_R2: {
-        const literal = this.fetch16();
-        this.setRegister('r2', literal);
+      // Move register to register
+      case instructions.MOV_REG_REG: {
+        const registerFrom = (this.fetch() % this.registersNames.length) * 2;
+        const registerTo = (this.fetch() % this.registersNames.length) * 2;
+        const value = this.registers.getUint16(registerFrom);
+        this.registers.setUint16(registerTo, value);
+        return;
+      }
+
+      // Move register to memory
+      case instructions.MOV_REG_MEM: {
+        const registerFrom = (this.fetch() % this.registersNames.length) * 2;
+        const address = this.fetch16();
+        const value = this.registers.getUint16(registerFrom);
+        this.memory.setUint16(address, value);
+        return;
+      }
+
+      // Move memory to register
+      case instructions.MOV_MEM_REG: {
+        const address = this.fetch16();
+        const registerTo = (this.fetch() % this.registersNames.length) * 2;
+        const value = this.registers.getUint16(address);
+        this.memory.setUint16(registerTo, value);
         return;
       }
 
