@@ -8,9 +8,7 @@ class CPU {
     this.registersNames = [
       'ip', //Instruction Pointer
       'acc', //Accumulator
-
-      //General Registers
-      'r1',
+      'r1', //General Registers
       'r2',
       'r3',
       'r4',
