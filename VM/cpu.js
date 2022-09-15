@@ -28,6 +28,15 @@ class CPU {
     }, {});
   }
 
+  debug() {
+    this.registersNames.forEach((name) => {
+      console.log(
+        `${name}: 0x${this.getRegister(name).toString(16).padStart(4, '0')}`
+      );
+    });
+    console.log('\n');
+  }
+
   getRegister(name) {
     if (!(name in this.registerMap)) {
       throw new Error(`getRegister: No such register '${name}'`);
@@ -41,7 +50,7 @@ class CPU {
       throw new Error(`getRegister: No such register '${name}'`);
     }
 
-    return this.registers.getUint16(this.registerMap[name], value);
+    return this.registers.setUint16(this.registerMap[name], value);
   }
 
   fetch() {
