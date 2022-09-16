@@ -22,39 +22,87 @@ const writableBytes = new Uint8Array(memory.buffer);
 
 const cpu = new CPU(memory);
 
+const subRoutineAddress = 0x3000;
 let i = 0;
 
-writableBytes[i++] = instructions.MOV_LIT_REG;
-writableBytes[i++] = 0x51; // 0x5151
-writableBytes[i++] = 0x51;
-writableBytes[i++] = R1;
+// Main Routine
+{
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x33;
+  writableBytes[i++] = 0x33;
 
-writableBytes[i++] = instructions.MOV_LIT_REG;
-writableBytes[i++] = 0x42; // 0x4242
-writableBytes[i++] = 0x42;
-writableBytes[i++] = R2;
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x22;
+  writableBytes[i++] = 0x22;
 
-writableBytes[i++] = instructions.PSH_REG;
-writableBytes[i++] = R1;
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x11;
+  writableBytes[i++] = 0x11;
 
-writableBytes[i++] = instructions.PSH_REG;
-writableBytes[i++] = R2;
+  writableBytes[i++] = instructions.MOV_LIT_REG;
+  writableBytes[i++] = 0x12;
+  writableBytes[i++] = 0x34;
+  writableBytes[i++] = R1;
 
-writableBytes[i++] = instructions.POP;
-writableBytes[i++] = R1;
+  writableBytes[i++] = instructions.MOV_LIT_REG;
+  writableBytes[i++] = 0x56;
+  writableBytes[i++] = 0x78;
+  writableBytes[i++] = R4;
 
-writableBytes[i++] = instructions.POP;
-writableBytes[i++] = R2;
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x00;
+  writableBytes[i++] = 0x00;
 
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0xffff - 1 - 6);
+  writableBytes[i++] = instructions.CAL_LIT;
+  writableBytes[i++] = (subRoutineAddress & 0xff00) >> 8;
+  writableBytes[i++] = subRoutineAddress & 0x00ff;
 
-document.addEventListener('keydown', (e) => {
-  if (e.key == 'Enter') {
-    cpu.step();
-    cpu.debug();
-    cpu.viewMemoryAt(cpu.getRegister('ip'));
-    cpu.viewMemoryAt(0xffff - 1 - 6);
-  }
-});
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x44;
+  writableBytes[i++] = 0x44;
+}
+
+// Subroutine
+{
+  i = subRoutineAddress;
+
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x01;
+  writableBytes[i++] = 0x02;
+
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x03;
+  writableBytes[i++] = 0x04;
+
+  writableBytes[i++] = instructions.PSH_LIT;
+  writableBytes[i++] = 0x05;
+  writableBytes[i++] = 0x06;
+
+  writableBytes[i++] = instructions.MOV_LIT_REG;
+  writableBytes[i++] = 0x07;
+  writableBytes[i++] = 0x08;
+  writableBytes[i++] = R1;
+
+  writableBytes[i++] = instructions.MOV_LIT_REG;
+  writableBytes[i++] = 0x09;
+  writableBytes[i++] = 0x0a;
+  writableBytes[i++] = R8;
+
+  writableBytes[i++] = instructions.RET;
+}
+
+// Run the Code step by step
+{
+  cpu.debug();
+  cpu.viewMemoryAt(cpu.getRegister('ip'));
+  cpu.viewMemoryAt(0xffff - 1 - 42, 44);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key == 'Enter') {
+      cpu.step();
+      cpu.debug();
+      cpu.viewMemoryAt(cpu.getRegister('ip'));
+      cpu.viewMemoryAt(0xffff - 1 - 42, 44);
+    }
+  });
+}
