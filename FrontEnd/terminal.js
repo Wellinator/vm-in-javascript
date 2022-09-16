@@ -30,6 +30,7 @@ class Terminal {
     args.forEach((arg) => {
       const newLine = Terminal.createLine(arg);
       Terminal.terminalElRef.appendChild(newLine);
+      Terminal.ScrollToBottom();
     });
   }
 
@@ -38,6 +39,7 @@ class Terminal {
       const newLine = Terminal.createSuccessLine(arg);
       Terminal.terminalElRef.appendChild(newLine);
     });
+    Terminal.ScrollToBottom();
   }
 
   static printWarn(...args) {
@@ -45,6 +47,7 @@ class Terminal {
       const newLine = Terminal.createWarnLine(arg);
       Terminal.terminalElRef.appendChild(newLine);
     });
+    Terminal.ScrollToBottom();
   }
 
   static printError(...args) {
@@ -52,6 +55,12 @@ class Terminal {
       const newLine = Terminal.createErrorLine(arg);
       Terminal.terminalElRef.appendChild(newLine);
     });
+    Terminal.ScrollToBottom();
+  }
+
+  static ScrollToBottom() {
+    const viewContainer = document.querySelector('#terminal');
+    viewContainer.scrollTop = viewContainer.scrollHeight;
   }
 }
 

@@ -45,27 +45,11 @@ cpu.debug();
 cpu.viewMemoryAt(cpu.getRegister('ip'));
 cpu.viewMemoryAt(0x0100);
 
-cpu.step();
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0x0100);
-
-cpu.step();
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0x0100);
-
-cpu.step();
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0x0100);
-
-cpu.step();
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0x0100);
-
-cpu.step();
-cpu.debug();
-cpu.viewMemoryAt(cpu.getRegister('ip'));
-cpu.viewMemoryAt(0x0100);
+document.addEventListener('keydown', (e) => {
+  if (e.key == 'Enter') {
+    cpu.step();
+    cpu.debug();
+    cpu.viewMemoryAt(cpu.getRegister('ip'));
+    cpu.viewMemoryAt(0x0100);
+  }
+});
