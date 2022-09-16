@@ -21,9 +21,9 @@ writableBytes[i++] = 0x01;
 writableBytes[i++] = 0x00; // 0x0100
 writableBytes[i++] = R1;
 
-writableBytes[i++] = instructions.MOV_MEM_REG;
-writableBytes[i++] = 0x01;
-writableBytes[i++] = 0x00; // 0x0100
+writableBytes[i++] = instructions.MOV_LIT_REG;
+writableBytes[i++] = 0x00;
+writableBytes[i++] = 0x01; // 0x0100
 writableBytes[i++] = R2;
 
 writableBytes[i++] = instructions.ADD_REG_REG;

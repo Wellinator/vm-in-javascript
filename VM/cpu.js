@@ -110,7 +110,7 @@ class CPU {
       case instructions.MOV_MEM_REG: {
         const address = this.fetch16();
         const registerTo = (this.fetch() % this.registersNames.length) * 2;
-        const value = this.registers.getUint16(address);
+        const value = this.memory.getUint16(address);
         this.memory.setUint16(registerTo, value);
         return;
       }
