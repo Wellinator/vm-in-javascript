@@ -126,10 +126,9 @@ class CPU {
       }
 
       // Jump if not equal
-      case instruction.JMP_NOT_EQ: {
+      case instructions.JMP_NOT_EQ: {
         const value = this.fetch16();
         const address = this.fetch16();
-
         if (value !== this.getRegister('acc')) {
           this.setRegister('ip', address);
         }
