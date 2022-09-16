@@ -1,6 +1,5 @@
 import './style.css';
 
-const readLine = require('readline');
 const createMemory = require('./VM/create-memory');
 const CPU = require('./VM/cpu');
 const instructions = require('./VM/instructions');
@@ -46,14 +45,27 @@ cpu.debug();
 cpu.viewMemoryAt(cpu.getRegister('ip'));
 cpu.viewMemoryAt(0x0100);
 
-const rl = readLine.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+cpu.step();
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
 
-rl.on('line', () => {
-  cpu.step();
-  cpu.debug();
-  cpu.viewMemoryAt(cpu.getRegister('ip'));
-  cpu.viewMemoryAt(0x0100);
-});
+cpu.step();
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
+
+cpu.step();
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
+
+cpu.step();
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
+
+cpu.step();
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
