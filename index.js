@@ -3,6 +3,7 @@ import './style.css';
 const createMemory = require('./VM/create-memory');
 const CPU = require('./VM/cpu');
 const instructions = require('./VM/instructions');
+const MemoryMapper = require('./VM/memory-mapper');
 
 const IP = 0;
 const ACC = 1;
@@ -17,10 +18,17 @@ const R8 = 9;
 const SP = 10;
 const FP = 11;
 
+const MM = new MemoryMapper();
+
 const memory = createMemory(256 * 256);
+MM.map(memory, 0, 0xffff);
+
+//Map 0xFF bytes of the address space to an "output device" - just stdout
+MM.map(createScreenDevice(), 0x3000, 0x30ff, true);
+
 const writableBytes = new Uint8Array(memory.buffer);
 
-const cpu = new CPU(memory);
+const cpu = new CPU(MM);
 
 const subRoutineAddress = 0x3000;
 let i = 0;

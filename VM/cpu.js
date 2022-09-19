@@ -28,8 +28,8 @@ class CPU {
       return map;
     }, {});
 
-    this.setRegister('sp', this.memory.byteLength - 1 - 1);
-    this.setRegister('fp', this.memory.byteLength - 1 - 1);
+    this.setRegister('sp', 0xffff - 1);
+    this.setRegister('fp', 0xffff - 1);
 
     this.stackFrameSize = 0;
   }
@@ -183,8 +183,8 @@ class CPU {
       case instructions.ADD_REG_REG: {
         const r1 = this.fetch();
         const r2 = this.fetch();
-        const registerValue1 = this.registers.getUint16(r1 * 2);
-        const registerValue2 = this.registers.getUint16(r2 * 2);
+        const registerValue1 = this.registers.getUint16(r1);
+        const registerValue2 = this.registers.getUint16(r2);
         this.setRegister('acc', registerValue1 + registerValue2);
         return;
       }
@@ -243,12 +243,24 @@ class CPU {
         this.popState();
         return;
       }
+
+      // Halt all computation
+      case instructions.HLT: {
+        return true;
+      }
     }
   }
 
   step() {
     const instruction = this.fetch();
     return this.execute(instruction);
+  }
+
+  run() {
+    const halt = this.step();
+    if (!halt) {
+      setImmediate(() => this.run());
+    }
   }
 }
 
