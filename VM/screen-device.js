@@ -6,17 +6,19 @@ const moveTo = (x, y) => {
 
 const createScreenDevice = () => {
   return {
-    getUint8: () => 0,
     getUint16: () => 0,
+    getUint8: () => 0,
     setUint16: (address, data) => {
       const characterValue = data & 0x00ff;
 
-      const x = address % 16;
-      const y = Math.floor(address / 16);
+      const x = (address % 16) + 1;
+      const y = Math.floor(address / 16) + 1;
 
-      moveTo(x, y);
+      // moveTo(x * 2, y);
       const character = String.fromCharCode(characterValue);
       Terminal.print(character);
     },
   };
 };
+
+module.exports = createScreenDevice;
